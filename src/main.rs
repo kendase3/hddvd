@@ -37,7 +37,7 @@ pub fn main() -> Result<(), String> {
     canvas.clear();
     let texture_creator = canvas.texture_creator();
     let mut texture = texture_creator.load_texture(Path::new("logo.png"))?;
-    texture.set_color_mod(rand::random::<u8>(), rand::random::<u8>(), rand::random::<u8>());
+    texture = bounce(texture);
     let mut hdrect = Rect::new(10, 10, 780, 580);
     canvas.copy(&texture, None, hdrect)?;
     canvas.present();
