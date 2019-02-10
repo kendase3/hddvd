@@ -33,7 +33,7 @@ pub fn main() -> Result<(), String> {
 
     let mut canvas = window.into_canvas().software().build().map_err(|e| e.to_string())?;
 
-    canvas.set_draw_color(Color::RGB(255, 255, 255));
+    canvas.set_draw_color(Color::RGB(0, 0, 0));
     canvas.clear();
     let texture_creator = canvas.texture_creator();
     let mut texture = texture_creator.load_texture(Path::new("logo.png"))?;
