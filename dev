@@ -1,0 +1,4 @@
+#! /bin/bash
+sudo docker rm hddvdbox 2&> /dev/null
+# for an interactive shell.  copy artifacts or goodies out to ~/attic to preserve
+sudo docker run -it --name hddvdbox -v "$(pwd)"/attic:/home/kewluser/attic hddvd:latest /bin/bash
