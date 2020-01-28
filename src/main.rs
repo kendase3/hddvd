@@ -1,20 +1,21 @@
-extern crate sdl2;
 extern crate rand;
+extern crate sdl2;
 
-use std::path::Path;
-use sdl2::rect::{Point, Rect};
-use std::time::Duration;
 use sdl2::event::Event;
+use sdl2::image::{InitFlag, LoadTexture};
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
-use sdl2::image::{LoadTexture, InitFlag};
+use sdl2::rect::{Point, Rect};
 use sdl2::render::Texture;
+use std::path::Path;
+use std::time::Duration;
 
 pub fn bounce(mut texture: Texture) -> Texture {
     texture.set_color_mod(
         rand::random::<u8>(),
         rand::random::<u8>(),
-        rand::random::<u8>());
+        rand::random::<u8>(),
+    );
     texture
 }
 
@@ -23,9 +24,12 @@ pub fn main() -> Result<(), String> {
     let video_subsystem = sdl_context.video()?;
     let image_context = sdl2::image::init(InitFlag::PNG | InitFlag::JPG)?;
 
-    let window = video_subsystem.window(
-        "Please Re-insert 'Kangaroo Jack' to resume movie",
-        1024, 768)
+    let window = video_subsystem
+        .window(
+            "Please Re-insert 'Kangaroo Jack' to resume movie",
+            1024,
+            768,
+        )
         .position_centered()
         .opengl()
         .build()
@@ -49,55 +53,53 @@ pub fn main() -> Result<(), String> {
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
-                Event::Quit {..} | Event::KeyDown { keycode: Some(Keycode::Escape), .. } => {
-                    break 'running
-                },
-               _ => {}
+                Event::Quit { .. }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Escape),
+                    ..
+                } => break 'running,
+                _ => {}
             }
         }
         ::std::thread::sleep(Duration::from_millis(10));
         // main logic loop, fires at interval ^
         match x_dir {
-          "right" => {
-            if hdrect.x  + hdrect.width() as i32 > 1024 {
-              texture = bounce(texture);
-              x_dir = "left";
+            "right" => {
+                if hdrect.x + hdrect.width() as i32 > 1024 {
+                    texture = bounce(texture);
+                    x_dir = "left";
+                } else {
+                    hdrect.x += 1;
+                }
             }
-            else {
-              hdrect.x += 1;
+            "left" => {
+                if hdrect.x <= 0 {
+                    texture = bounce(texture);
+                    x_dir = "right";
+                } else {
+                    hdrect.x -= 1;
+                }
             }
-          }
-          "left" => {
-            if hdrect.x <= 0 {
-              texture = bounce(texture);
-              x_dir = "right";
-            }
-            else {
-              hdrect.x -= 1;
-            }
-          }
-          _ => {}
+            _ => {}
         }
         match y_dir {
-          "down" => {
-            if hdrect.y  + hdrect.height() as i32 > 768 {
-              texture = bounce(texture);
-              y_dir = "up";
+            "down" => {
+                if hdrect.y + hdrect.height() as i32 > 768 {
+                    texture = bounce(texture);
+                    y_dir = "up";
+                } else {
+                    hdrect.y += 1;
+                }
             }
-            else {
-              hdrect.y += 1;
+            "up" => {
+                if hdrect.y <= 0 {
+                    y_dir = "down";
+                    texture = bounce(texture);
+                } else {
+                    hdrect.y -= 1;
+                }
             }
-          }
-          "up" => {
-            if hdrect.y <= 0 {
-              y_dir = "down";
-              texture = bounce(texture);
-            }
-            else {
-              hdrect.y -= 1;
-            }
-          }
-          _ => {}
+            _ => {}
         }
         canvas.clear();
         canvas.copy(&texture, None, hdrect)?;

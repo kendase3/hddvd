@@ -1,0 +1,3 @@
+max_width = 80
+# uncomment once it's in stable
+#wrap_comments = true
