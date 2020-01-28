@@ -57,6 +57,10 @@ pub fn main() -> Result<(), String> {
                 | Event::KeyDown {
                     keycode: Some(Keycode::Escape),
                     ..
+                }
+                | Event::KeyDown {
+                    keycode: Some(Keycode::Q),
+                    ..
                 } => break 'running,
                 _ => {}
             }
