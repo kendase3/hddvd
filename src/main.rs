@@ -2,10 +2,10 @@ extern crate rand;
 extern crate sdl2;
 
 use sdl2::event::Event;
-use sdl2::image::{InitFlag, LoadTexture};
+use sdl2::image::LoadTexture;
 use sdl2::keyboard::Keycode;
 use sdl2::pixels::Color;
-use sdl2::rect::{Point, Rect};
+use sdl2::rect::Rect;
 use sdl2::render::Texture;
 use std::path::Path;
 use std::time::Duration;
@@ -22,7 +22,6 @@ pub fn bounce(mut texture: Texture) -> Texture {
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
-    let image_context = sdl2::image::init(InitFlag::PNG | InitFlag::JPG)?;
 
     let window = video_subsystem
         .window(
